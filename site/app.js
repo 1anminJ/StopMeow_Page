@@ -39,7 +39,7 @@ async function loadGallery() {
   const template = document.getElementById("card");
   let cats;
   try {
-    cats = await (await fetch("gallery.json", { cache: "no-cache" })).json();
+    cats = await (await fetch(`gallery.json?t=${Date.now()}`, { cache: "no-store" })).json();
   } catch {
     gallery.innerHTML = '<p class="empty">갤러리를 불러오지 못했어요. 잠시 후 새로고침해 주세요.</p>';
     return;
