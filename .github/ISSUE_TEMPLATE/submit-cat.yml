@@ -1,13 +1,14 @@
 name: 내 고양이 올리기
 description: 멈춰묘 앱에서 꾸민 고양이를 갤러리에 올려요
-title: "[고양이] "
+title: "[고양이 공유] "
 body:
   - type: markdown
     attributes:
       value: |
-        멈춰묘 앱 → **멈춰묘 설정… → 디자인** 탭에서 **코드 복사**를 누른 뒤 아래에 붙여 주세요.
+        멈춰묘 앱 → **멈춰묘 설정… → 디자인** 탭에서 **고양이 공유하기**를 누르면 코드가 미리 채워져요. (또는 **코드 복사** 후 아래에 붙여 주세요.)
         올리면 자동으로 검사해서 1~2분 뒤 갤러리에 나타나고, 이 이슈는 자동으로 닫혀요.
   - type: input
+    id: cat-name
     attributes:
       label: 고양이 이름
       placeholder: 치즈
@@ -21,6 +22,7 @@ body:
     validations:
       required: true
   - type: textarea
+    id: code
     attributes:
       label: 공유 코드
       placeholder: STOPMEOW1:...
