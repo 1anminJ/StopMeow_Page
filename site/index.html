@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>멈춰묘 · StopMeow</title>
+  <meta name="description" content="숏폼을 오래 보면 화면 위 고양이가 말려요. 직접 꾸민 고양이를 공유하는 멈춰묘 갤러리.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐱</text></svg>">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero">
+    <canvas id="hero-cat" class="cat" width="13" height="8" aria-label="멈춰묘 기본 고양이"></canvas>
+    <div>
+      <h1>멈춰묘 <span>StopMeow</span></h1>
+      <p>숏폼을 오래 보면 화면 위를 돌아다니던 고양이가 와서 말려요.<br>직접 꾸민 고양이를 올리고, 마음에 드는 고양이를 데려가세요.</p>
+      <div class="actions">
+        <a class="button primary" href="https://github.com/1anminJ/StopMeow_Page/issues/new?template=submit-cat.yml">내 고양이 올리기</a>
+        <a class="button" href="https://github.com/1anminJ/StopMeow">앱 보러가기</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="howto">
+      <h2>🐾 이렇게 써요</h2>
+      <ol>
+        <li><strong>데려가기</strong> — 아래 갤러리에서 <em>코드 복사</em> → 앱 <em>멈춰묘 설정… → 디자인</em> 탭에서 <em>코드 붙여넣기</em> → <em>저장</em></li>
+        <li><strong>올리기</strong> — 앱 디자인 탭에서 <em>코드 복사</em> → <em>내 고양이 올리기</em>에 붙여넣기 (GitHub 계정 필요, 1~2분 뒤 등록)</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>🐾 갤러리 <span id="count"></span></h2>
+      <div id="gallery" class="grid" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <footer>멈춰묘 · <a href="https://github.com/1anminJ/StopMeow_Page">GitHub</a></footer>
+
+  <template id="card">
+    <article class="card">
+      <canvas class="cat" width="13" height="8"></canvas>
+      <h3></h3>
+      <p class="by"></p>
+      <button class="button primary copy" type="button">코드 복사</button>
+    </article>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+name: 갤러리 등록 & 페이지 배포
+
+# GITHUB_TOKEN으로 한 push는 다른 워크플로를 깨우지 않으므로, 등록과 배포를 한 워크플로에 둔다.
+on:
+  push:
+    branches: [main]
+  issues:
+    types: [opened]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+  pages: write
+  id-token: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node --test scripts/
+
+  submit:
+    # 이슈 양식으로 올라온 것만 처리 (일반 이슈는 무시)
+    if: github.event_name == 'issues' && contains(github.event.issue.body, '### 공유 코드')
+    needs: test
+    runs-on: ubuntu-latest
+    outputs:
+      added: ${{ steps.add.outputs.added }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - id: add
+        run: node scripts/submit.mjs
+      - name: 등록된 고양이 커밋
+        if: steps.add.outputs.added == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add cats/
+          git commit -m "feat: 갤러리에 #${{ github.event.issue.number }} 고양이 추가"
+          # 동시에 여러 마리가 올라와도 고양이마다 파일이 달라 rebase 충돌이 나지 않는다.
+          for i in 1 2 3; do git pull --rebase && git push && break; sleep 5; done
+      - name: 이슈에 결과 댓글 달고 닫기
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue comment ${{ github.event.issue.number }} --repo ${{ github.repository }} --body-file comment.md
+          gh issue close ${{ github.event.issue.number }} --repo ${{ github.repository }}
+
+  deploy:
+    needs: [test, submit]
+    # push/수동 실행이면 항상, 이슈면 실제로 등록됐을 때만 배포
+    if: always() && needs.test.result == 'success' && (github.event_name != 'issues' || needs.submit.outputs.added == 'true')
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main # submit 단계에서 방금 push한 커밋까지 포함
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node scripts/build.mjs
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deployment
+        uses: actions/deploy-pages@v4

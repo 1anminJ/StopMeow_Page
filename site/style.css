@@ -1,0 +1,91 @@
+/* 앱 "멈춰묘 설정" 창(CuteTheme)과 같은 팔레트 */
+:root {
+  --bg: #FFF7EB;
+  --card: #FAE8CF;
+  --accent: #E08C4A;
+  --accent-dark: #9E5E2E;
+  --text: #3B2417;
+  --muted: rgba(59, 36, 23, 0.6);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: ui-rounded, "SF Pro Rounded", "Apple SD Gothic Neo", system-ui, sans-serif;
+  line-height: 1.6;
+}
+
+a { color: var(--accent-dark); }
+
+.hero, main, footer { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+.hero {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  padding-top: 64px;
+  padding-bottom: 32px;
+}
+.hero .cat { width: 208px; flex-shrink: 0; }
+.hero h1 { margin: 0; font-size: 44px; }
+.hero h1 span { font-size: 20px; color: var(--muted); font-weight: 600; }
+.hero p { margin: 12px 0 20px; font-size: 17px; }
+
+.actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.button {
+  display: inline-block;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 20px;
+  background: var(--card);
+  color: var(--text);
+  font: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.button:hover { transform: translateY(-1px); }
+.button:active { transform: scale(0.96); }
+.button.primary { background: var(--accent); color: #fff; }
+.button:focus-visible { outline: 3px solid var(--accent-dark); outline-offset: 2px; }
+
+h2 { font-size: 20px; margin: 40px 0 16px; }
+h2 span { color: var(--muted); font-weight: 600; font-size: 16px; }
+
+.howto ol { margin: 0; padding-left: 20px; }
+.howto li { margin-bottom: 6px; }
+.howto em { font-style: normal; font-weight: 700; color: var(--accent-dark); }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  background: var(--card);
+  border-radius: 20px;
+  padding: 16px;
+  text-align: center;
+}
+.card .cat { width: 130px; }
+.card h3 { margin: 8px 0 0; font-size: 17px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.card .by { margin: 0 0 12px; font-size: 13px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* 13x8 캔버스를 CSS로 키워서 픽셀 블록 그대로 보이게 */
+.cat { image-rendering: pixelated; aspect-ratio: 13 / 8; height: auto; }
+
+.empty { color: var(--muted); grid-column: 1 / -1; }
+
+footer { padding-top: 48px; padding-bottom: 32px; color: var(--muted); font-size: 14px; }
+
+@media (max-width: 640px) {
+  .hero { flex-direction: column; text-align: center; padding-top: 40px; }
+  .hero .cat { width: 160px; }
+  .actions { justify-content: center; }
+}
